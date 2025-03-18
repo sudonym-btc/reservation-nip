@@ -31,7 +31,7 @@ They exist to document what may be implemented by [Nostr](https://github.com/nos
 - [NIP-07: `window.nostr` capability for web browsers](07.md)
 - [NIP-08: Handling Mentions](08.md) --- **unrecommended**: deprecated in favor of [NIP-27](27.md)
 - [NIP-09: Event Deletion Request](09.md)
-- [NIP-10: Conventions for clients' use of `e` and `p` tags in text events](10.md)
+- [NIP-10: Text Notes and Threads](10.md)
 - [NIP-11: Relay Information Document](11.md)
 - [NIP-13: Proof of Work](13.md)
 - [NIP-14: Subject tag in text events](14.md)
@@ -77,8 +77,10 @@ They exist to document what may be implemented by [Nostr](https://github.com/nos
 - [NIP-59: Gift Wrap](59.md)
 - [NIP-60: Cashu Wallet](60.md)
 - [NIP-61: Nutzaps](61.md)
+- [NIP-62: Request to Vanish](62.md)
 - [NIP-64: Chess (PGN)](64.md)
 - [NIP-65: Relay List Metadata](65.md)
+- [NIP-66: Relay Discovery and Liveness Monitoring](66.md)
 - [NIP-68: Picture-first feeds](68.md)
 - [NIP-69: Peer-to-peer Order events](69.md)
 - [NIP-70: Protected Events](70.md)
@@ -89,6 +91,7 @@ They exist to document what may be implemented by [Nostr](https://github.com/nos
 - [NIP-78: Application-specific data](78.md)
 - [NIP-84: Highlights](84.md)
 - [NIP-86: Relay Management API](86.md)
+- [NIP-88: Polls](88.md)
 - [NIP-89: Recommended Application Handlers](89.md)
 - [NIP-90: Data Vending Machines](90.md)
 - [NIP-92: Media Attachments](92.md)
@@ -104,7 +107,7 @@ They exist to document what may be implemented by [Nostr](https://github.com/nos
 | kind          | description                     | NIP                                    |
 | ------------- | ------------------------------- | -------------------------------------- |
 | `0`           | User Metadata                   | [01](01.md)                            |
-| `1`           | Short Text Note                 | [01](01.md)                            |
+| `1`           | Short Text Note                 | [10](10.md)                            |
 | `2`           | Recommend Relay                 | 01 (deprecated)                        |
 | `3`           | Follows                         | [02](02.md)                            |
 | `4`           | Encrypted Direct Messages       | [04](04.md)                            |
@@ -118,21 +121,31 @@ They exist to document what may be implemented by [Nostr](https://github.com/nos
 | `12`          | Group Thread Reply              | 29 (deprecated)                        |
 | `13`          | Seal                            | [59](59.md)                            |
 | `14`          | Direct Message                  | [17](17.md)                            |
+| `15`          | File Message                    | [17](17.md)                            |
 | `16`          | Generic Repost                  | [18](18.md)                            |
 | `17`          | Reaction to a website           | [25](25.md)                            |
 | `20`          | Picture                         | [68](68.md)                            |
+| `21`          | Video Event                     | [71](71.md)                            |
+| `22`          | Short-form Portrait Video Event | [71](71.md)                            |
+| `30`          | internal reference              | [NKBIP-03]                             |
+| `31`          | external web reference          | [NKBIP-03]                            |
+| `32`          | hardcopy reference              | [NKBIP-03]                            |
+| `33`          | prompt reference                | [NKBIP-03]                            |
 | `40`          | Channel Creation                | [28](28.md)                            |
 | `41`          | Channel Metadata                | [28](28.md)                            |
 | `42`          | Channel Message                 | [28](28.md)                            |
 | `43`          | Channel Hide Message            | [28](28.md)                            |
 | `44`          | Channel Mute User               | [28](28.md)                            |
+| `62`          | Request to Vanish               | [62](62.md)                            |
 | `64`          | Chess (PGN)                     | [64](64.md)                            |
 | `818`         | Merge Requests                  | [54](54.md)                            |
+| `1018`        | Poll Response                   | [88](88.md)                            |
 | `1021`        | Bid                             | [15](15.md)                            |
 | `1022`        | Bid confirmation                | [15](15.md)                            |
 | `1040`        | OpenTimestamps                  | [03](03.md)                            |
 | `1059`        | Gift Wrap                       | [59](59.md)                            |
 | `1063`        | File Metadata                   | [94](94.md)                            |
+| `1068`        | Poll                            | [88](88.md)                            |
 | `1111`        | Comment                         | [22](22.md)                            |
 | `1311`        | Live Chat Message               | [53](53.md)                            |
 | `1617`        | Patches                         | [34](34.md)                            |
@@ -163,21 +176,23 @@ They exist to document what may be implemented by [Nostr](https://github.com/nos
 | `9802`        | Highlights                      | [84](84.md)                            |
 | `10000`       | Mute list                       | [51](51.md)                            |
 | `10001`       | Pin list                        | [51](51.md)                            |
-| `10002`       | Relay List Metadata             | [65](65.md)                            |
+| `10002`       | Relay List Metadata             | [65](65.md), [51](51.md)               |
 | `10003`       | Bookmark list                   | [51](51.md)                            |
 | `10004`       | Communities list                | [51](51.md)                            |
 | `10005`       | Public chats list               | [51](51.md)                            |
 | `10006`       | Blocked relays list             | [51](51.md)                            |
 | `10007`       | Search relays list              | [51](51.md)                            |
 | `10009`       | User groups                     | [51](51.md), [29](29.md)               |
-| `10013`       | Draft relays                    | [37](37.md)                            |
+| `10013`       | Private event relay list        | [37](37.md)                            |
 | `10015`       | Interests list                  | [51](51.md)                            |
 | `10019`       | Nutzap Mint Recommendation      | [61](61.md)                            |
 | `10030`       | User emoji list                 | [51](51.md)                            |
 | `10050`       | Relay list to receive DMs       | [51](51.md), [17](17.md)               |
 | `10063`       | User server list                | [Blossom][blossom]                     |
 | `10096`       | File storage server list        | [96](96.md)                            |
+| `10166`       | Relay Monitor Announcement      | [66](66.md)                            |
 | `13194`       | Wallet Info                     | [47](47.md)                            |
+| `17375`       | Cashu Wallet Event              | [60](60.md)                            |
 | `21000`       | Lightning Pub RPC               | [Lightning.Pub][lnpub]                 |
 | `22242`       | Client Authentication           | [42](42.md)                            |
 | `23194`       | Wallet Request                  | [47](47.md)                            |
@@ -202,10 +217,12 @@ They exist to document what may be implemented by [Nostr](https://github.com/nos
 | `30023`       | Long-form Content               | [23](23.md)                            |
 | `30024`       | Draft Long-form Content         | [23](23.md)                            |
 | `30030`       | Emoji sets                      | [51](51.md)                            |
-| `30040`       | Modular Article Header          | [NKBIP-01]                             |
-| `30041`       | Modular Article Content         | [NKBIP-01]                             |
+| `30040`       | Curated Publication Index       | [NKBIP-01]                             |
+| `30041`       | Curated Publication Content     | [NKBIP-01]                             |
 | `30063`       | Release artifact sets           | [51](51.md)                            |
 | `30078`       | Application-specific Data       | [78](78.md)                            |
+| `30166`       | Relay Discovery                 | [66](66.md)                            |
+| `30267`       | App curation sets               | [51](51.md)                            |
 | `30311`       | Live Event                      | [53](53.md)                            |
 | `30315`       | User Statuses                   | [38](38.md)                            |
 | `30388`       | Slide Set                       | [Corny Chat][cornychat-slideset]       |
@@ -223,11 +240,9 @@ They exist to document what may be implemented by [Nostr](https://github.com/nos
 | `31924`       | Calendar                        | [52](52.md)                            |
 | `31925`       | Calendar Event RSVP             | [52](52.md)                            |
 | `31989`       | Handler recommendation          | [89](89.md)                            |
-| `31990`       | Handler information             | [89](89.md)                            |
-| `34235`       | Video Event                     | [71](71.md)                            |
-| `34236`       | Short-form Portrait Video Event | [71](71.md)                            |
+| `31990`       | Handler information             | [89](89.md)                            |                         |
+| `32267`       | Software Application            |                                        |                        |
 | `34550`       | Community Definition            | [72](72.md)                            |
-| `37375`       | Cashu Wallet Event              | [60](60.md)                            |
 | `38383`       | Peer-to-peer Order events       | [69](69.md)                            |
 | `39000-9`     | Group metadata events           | [29](29.md)                            |
 
@@ -237,8 +252,9 @@ They exist to document what may be implemented by [Nostr](https://github.com/nos
 [cornychat-slideset]: https://cornychat.com/datatypes#kind30388slideset
 [cornychat-linkset]: https://cornychat.com/datatypes#kind31388linkset
 [joinstr]: https://gitlab.com/1440000bytes/joinstr/-/blob/main/NIP.md
-[NKBIP-01]: https://wikistr.com/nkbip-01
-[NKBIP-02]: https://wikistr.com/nkbip-02
+[NKBIP-01]: https://wikistr.com/nkbip-01*fd208ee8c8f283780a9552896e4823cc9dc6bfd442063889577106940fd927c1
+[NKBIP-02]: https://wikistr.com/nkbip-02*fd208ee8c8f283780a9552896e4823cc9dc6bfd442063889577106940fd927c1
+[NKBIP-03]: https://wikistr.com/nkbip-03*fd208ee8c8f283780a9552896e4823cc9dc6bfd442063889577106940fd927c1
 [blossom]: https://github.com/hzrd149/blossom
 [Tidal-nostr]: https://wikistr.com/tidal-nostr
 
@@ -293,7 +309,7 @@ They exist to document what may be implemented by [Nostr](https://github.com/nos
 | `s`               | status                               | --                              | [69](69.md)                                        |
 | `t`               | hashtag                              | --                              | [24](24.md), [34](34.md), [35](35.md)              |
 | `u`               | url                                  | --                              | [61](61.md), [98](98.md)                           |
-| `x`               | infohash                             | --                              | [35](35.md)                                        |
+| `x`               | hash                                 | --                              | [35](35.md), [56](56.md)                           |
 | `y`               | platform                             | --                              | [69](69.md)                                        |
 | `z`               | order number                         | --                              | [69](69.md)                                        |
 | `-`               | --                                   | --                              | [70](70.md)                                        |
